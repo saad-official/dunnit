@@ -17,7 +17,7 @@ Set-Location (Split-Path -Parent $PSScriptRoot)
 
 $secrets = "G:\Vibe Engineering Apps\.secrets"
 $journeyEnv = "G:\AI Engineering Journey\.env"
-$prodUrl = "https://dunnit.vercel.app"
+$prodUrl = "https://getdunnit.vercel.app"
 $stripe = "C:\Users\Dell\AppData\Local\Microsoft\WinGet\Packages\Stripe.StripeCli_Microsoft.Winget.Source_8wekyb3d8bbwe\stripe.exe"
 
 function Read-EnvValue($file, $name) {
@@ -51,9 +51,9 @@ if (-not $stripeSecret.StartsWith("sk_test_")) { throw "stripe-secret.txt must h
 
 $ref = Read-Secret "supabase\.temp\project-ref"
 $keysJson = & pnpm exec supabase projects api-keys --project-ref $ref -o json | ConvertFrom-Json
-$publishable = ($keysJson | Where-Object { $_.name -eq "publishable" -or $_.id -like "sb_publishable*" } | Select-Object -First 1).api_key
+$publishable = ($keysJson | Where-Object { $_.type -eq "publishable" } | Select-Object -First 1).api_key
 if (-not $publishable) { $publishable = ($keysJson | Where-Object { $_.name -eq "anon" }).api_key }
-$secretKey = ($keysJson | Where-Object { $_.name -like "secret*" -or $_.id -like "sb_secret*" } | Select-Object -First 1).api_key
+$secretKey = ($keysJson | Where-Object { $_.type -eq "secret" } | Select-Object -First 1).api_key
 if (-not $secretKey) { $secretKey = ($keysJson | Where-Object { $_.name -eq "service_role" }).api_key }
 $supabaseUrl = "https://$ref.supabase.co"
 
