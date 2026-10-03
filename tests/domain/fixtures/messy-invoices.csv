@@ -1,0 +1,15 @@
+﻿Invoice #, Client , Email ,Total,Currency,Issue Date,Due Date,Notes
+INV-001,Acme Corp, ap@acme.com ,"$1,234.50",usd,2026-09-01,2026-10-01,first
+INV-002,"Smith, Jones & Co",billing@smithjones.com,980,,09/05/2026,10/05/2026,
+,,,,,,,
+INV-003,Bad Email Ltd,not-an-email,100,USD,2026-09-01,2026-10-01,
+INV-004,Day First Pty,df@example.com,250.00,EUR,25/09/2026,25/10/2026,
+INV-005,Zero Inc,zero@example.com,0,USD,2026-09-01,2026-10-01,
+INV-001,Dup Co,dup@example.com,10,USD,2026-09-01,2026-10-01,
+INV-006,Backwards LLC,b@example.com,10,USD,2026-10-01,2026-09-01,
+INV-007,"Multi
+line Ltd",ml@example.com,"1.234,50",EUR,2026-09-01,2026-10-01,
+INV-008,Leap Co,leap@example.com,99,USD,2026-02-30,2026-03-30,
+INV-009,Missing Amount Co,ma@example.com,,USD,2026-09-01,2026-10-01,
+INV-010,Euro Shop,eu@example.com,€99,,2026-09-01,2026-10-01,
+INV-011,Bad Currency,bc@example.com,10,DOLLARS,2026-09-01,2026-10-01,
