@@ -4,7 +4,7 @@
 --   * anon: no access to any table, view or helper function.
 --   * authenticated: rows of orgs the caller is a member of (via memberships).
 --   * service_role: used ONLY by server-side cron (/api/cron/*) and webhooks
---     (/api/stripe/webhook, /api/inbound/email) with SUPABASE_SECRET_KEY. It has
+--     (/api/webhooks/stripe, /api/inbound/email) with SUPABASE_SECRET_KEY. It has
 --     BYPASSRLS, so none of the policies below apply to it. That is why those code
 --     paths must always scope their queries by org_id themselves. The append-only
 --     trigger on agent_events still applies to service_role.
