@@ -36,6 +36,8 @@ export type DraftWriterInput = {
   /** Owner feedback from rejected drafts, newest first (max 3). */
   rejectionReasons?: string[];
   payUrl?: string | null;
+  /** Set for the gentle follow-up after a promise-to-pay date has passed. */
+  checkIn?: { promiseDate: string } | null;
 };
 
 export type DraftWriterResult = {
@@ -114,7 +116,9 @@ export function buildPrompt(input: DraftWriterInput): string {
       : "";
 
   return [
-    `Reminder step: ${input.step} of 4. Tone: ${input.tone}. ${TONE_GUIDE[input.tone]}`,
+    input.checkIn
+      ? `Gentle check-in. The customer promised to pay by ${input.checkIn.promiseDate} and that date has passed. Ask kindly whether the payment went out, without accusing. Tone: friendly.`
+      : `Reminder step: ${input.step} of 4. Tone: ${input.tone}. ${TONE_GUIDE[input.tone]}`,
     "",
     `Business: ${input.businessName}`,
     `Signature (use exactly):\n${input.signature}`,
