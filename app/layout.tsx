@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const display = Fraunces({
@@ -42,8 +43,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${display.variable} ${body.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground font-body">
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         {children}
+        <Toaster position="bottom-right" richColors closeButton />
         <Analytics />
       </body>
     </html>
