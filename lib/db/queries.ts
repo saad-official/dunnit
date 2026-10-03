@@ -95,7 +95,7 @@ export const getQueueCount = cache(async (orgId: string): Promise<number> => {
     .from("touches")
     .select("id", { count: "exact", head: true })
     .eq("org_id", orgId)
-    .eq("status", "draft")
+    .in("status", ["draft", "snoozed"])
     .or(`snoozed_until.is.null,snoozed_until.lte."${now}"`);
 
   if (error) {
