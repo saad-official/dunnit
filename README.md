@@ -1,6 +1,6 @@
 # Dunnit
 
-**Invoices chased, politely.** An accounts-receivable agent for owner-operators: it plans reminder cadences, drafts each email in your voice, waits for your approval (or sends on its own once you trust it), reads the replies, and keeps the books straight.
+**Invoices chased, politely.** Live at [getdunnit.vercel.app](https://getdunnit.vercel.app). An accounts-receivable agent for owner-operators: it plans reminder cadences, drafts each email in your voice, waits for your approval (or sends on its own once you trust it), reads the replies, and keeps the books straight.
 
 Part of the [Vibe Build Series](https://github.com/saad-official/vibe-build-series): real products for small businesses, built in public on free tiers.
 
@@ -45,3 +45,10 @@ pnpm exec supabase db push
 ## Status
 
 In active development. Demo mode delivers all email to the owner's own inbox; replies can be pasted or simulated in the Demo Inbox.
+
+## Try the demo
+
+1. Sign up (email and password; no confirmation email needed).
+2. Invoices → **Load demo data**: ten synthetic invoices in every state, including two that are already overdue and due for a reminder.
+3. Queue → **Run agent now** drafts the due reminders; approve one. In demo mode nothing leaves the app: the Outbox shows what would have been sent.
+4. Inbox → **Simulate a reply** writes a plausible customer reply, classifies it, and applies the deterministic outcome (a promise pauses the cadence; a dispute escalates).
