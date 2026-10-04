@@ -217,8 +217,9 @@ export async function seedDemoData(client: Client, org: OrganizationRow, now = n
     }
 
     if (lastStep > 0) {
-      // Reflect sent history: next planned step is due now for the overdue ones.
-      const nextRun = zonedTimeToUtc(today, 9, 0, tz);
+      // Reflect sent history: the next planned step is due right now, so "Run agent
+      // now" drafts it immediately after loading the demo. Later steps follow the planner.
+      const nextRun = new Date(now.getTime() - 60_000);
       await client.from("cadences").update({ step: lastStep, next_run_at: nextRun.toISOString() }).eq("id", cadence.id);
     }
 
