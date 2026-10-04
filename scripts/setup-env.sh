@@ -43,7 +43,8 @@ case "$STRIPE_SECRET" in sk_test_*) ;; *) echo "stripe-secret.txt must hold a te
 REF=$(read_secret supabase/.temp/project-ref)
 KEYS_JSON=$(pnpm exec supabase projects api-keys --project-ref "$REF" -o json 2>/dev/null)
 PUBLISHABLE=$(printf '%s' "$KEYS_JSON" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);const a=Array.isArray(j)?j:(j.api_keys||[]);const k=a.find(x=>x.type==="publishable")||a.find(x=>x.name==="anon");console.log(k?k.api_key:"")})')
-SECRET_KEY=$(printf '%s' "$KEYS_JSON" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);const a=Array.isArray(j)?j:(j.api_keys||[]);const k=a.find(x=>x.type==="secret")||a.find(x=>x.name==="service_role");console.log(k?k.api_key:"")})')
+# service_role first: the sb_secret_ key returned 401 from PostgREST on these projects (2026-10-04).
+SECRET_KEY=$(printf '%s' "$KEYS_JSON" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);const a=Array.isArray(j)?j:(j.api_keys||[]);const k=a.find(x=>x.name==="service_role")||a.find(x=>x.type==="secret");console.log(k?k.api_key:"")})')
 [ -n "$PUBLISHABLE" ] && [ -n "$SECRET_KEY" ] || { echo "could not read Supabase keys"; exit 1; }
 SUPABASE_URL="https://$REF.supabase.co"
 
