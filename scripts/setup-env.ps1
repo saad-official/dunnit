@@ -33,10 +33,16 @@ function Read-Secret($file) {
 }
 
 function Set-VercelEnv($name, $value, [switch]$Sensitive) {
+  $vercelCmd = "C:/Program Files/nodejs/vercel.cmd"
   foreach ($target in @("production", "preview", "development")) {
     $args = @("env", "add", $name, $target, "--force")
     if ($Sensitive) { $args += "--sensitive" }
-    $value | & vercel @args *> $null
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    $value | & $vercelCmd  *> $null
+    $code = $LASTEXITCODE
+    $ErrorActionPreference = $prev
+    if ($code -ne 0) { throw "vercel env add $name ($target) failed with exit code $code" }
   }
   Write-Host "  set $name"
 }
@@ -50,7 +56,9 @@ $stripeSecret = Read-Secret "$secrets\stripe-secret.txt"
 if (-not $stripeSecret.StartsWith("sk_test_")) { throw "stripe-secret.txt must hold a test-mode key (sk_test_...)" }
 
 $ref = Read-Secret "supabase\.temp\project-ref"
-$keysJson = & pnpm exec supabase projects api-keys --project-ref $ref -o json | ConvertFrom-Json
+$prevEap = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+$keysJson = (& "C:/Program Files/nodejs/pnpm.cmd" exec supabase projects api-keys --project-ref $ref -o json 2>$null) | ConvertFrom-Json
+$ErrorActionPreference = $prevEap
 $publishable = ($keysJson | Where-Object { $_.type -eq "publishable" } | Select-Object -First 1).api_key
 if (-not $publishable) { $publishable = ($keysJson | Where-Object { $_.name -eq "anon" }).api_key }
 $secretKey = ($keysJson | Where-Object { $_.type -eq "secret" } | Select-Object -First 1).api_key
